@@ -20,7 +20,7 @@ Most of the scripts require three inputs:
 
 
 ## Computing pairwise unit prediction ##
-# ComputeCoRippleCCGs.m
+### ComputeCoRippleCCGs.m
 inputs:
     - unit cell array
     - rippleStats.m ripple detection output
@@ -32,7 +32,7 @@ output:
         - periods absent of rippling
         - periods where only one of the cell locations has a detected ripple
 
-# PreprocessPrediction.m
+### PreprocessPrediction.m
 inputs:
     - unit cell array
     - rippleStats.m ripple detection output
@@ -44,7 +44,7 @@ output:
         - trials: the trial ID during which the time in times occurred.
         - APar: the time during the recording that the A unit fired
 
-# ComputePredictability.m
+### ComputePredictability.m
 inputs:
     - preprocessed **rippStats** and **nullStats** from PreprocessPrediction.m
     - units cell array
