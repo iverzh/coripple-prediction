@@ -4,9 +4,8 @@ clear
 close all
 clc
 
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/UtahArray'))
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/util'))
-addpath(genpath('/space/seh8/1/halgdev/projects/cdickey/packages'))
+addpath(genpath('../../code'))
+
 %%
 
 
@@ -39,10 +38,10 @@ clc
 
 subjects = {'B1', 'B1-dual', 'E1', 'E2'};
 state = 'wake';
-clr = [237/255 110/255 87/255; %T11
-       255/255 66/255 161/255; %T11-dual
-       108/255 227/255 208/255; %MG29
-       129/255 213/255 83/255]; %MG63
+clr = [237/255 110/255 87/255; %B1
+       255/255 66/255 161/255; %B1-dual
+       108/255 227/255 208/255; %E1
+       129/255 213/255 83/255]; %E2
 % 
 
 BA = []; %B --> A
@@ -63,7 +62,7 @@ for subj =  [1 3] %[1,2,3,4]
     subject = subjects{subj};
 
     if contains(subject,'dual')
-        fdir = sprintf('./out/%s/lateral-medial', 'T11');
+        fdir = sprintf('./out/%s/lateral-medial', 'B1');
         subject = 'B1';
     elseif contains(subject,'B')
         fdir = sprintf('./out/%s/medial', subject);
