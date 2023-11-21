@@ -23,7 +23,7 @@ Most of the scripts require three inputs:
 ### ComputeCoRippleCCGs.m
 inputs:
 - unit cell array
-- rippleStats.m ripple detection output
+- rippleStats.mat ripple detection output
  - stage mask
 
 output:
@@ -35,8 +35,8 @@ output:
 ### PreprocessPrediction.m
 inputs:
 - unit cell array
-- rippleStats.m ripple detection output
-- the output folder containing all resutls from ComputeCoRippleCCGs.m
+- rippleStats.mat ripple detection output
+- the output folder containing all resutls from *ComputeCoRippleCCGs.m*
 - RBphaseAll ripple band phase matrix. 
 output:
 - **rippStats** structure containing preprocessed data during co-ripples and **nullStats** containing the same for control condition. The most relevant fields of the output structure are:
@@ -46,9 +46,10 @@ output:
 
 ### ComputePredictability.m
 inputs:
-- preprocessed **rippStats** and **nullStats** from PreprocessPrediction.m
+- preprocessed **rippStats** and **nullStats** from *PreprocessPrediction.m*
 - units cell array
 - RBphaseAll maxtrix. 
+
 output:
 - modified **rippStats** and **nullStats** structures with the following important fields:
     - predict: mean prediction for cell pair A and B.
@@ -60,6 +61,10 @@ output:
     - PhaseA: the rippleband phase in location A when unit B fires.
     - PhaseB: the rippleband phase in location B when unit B fires.
     - rippPhaseUnitA: the rippleband phase in location A when unit A fires.
+
+### ComputePredictability.m
+All inputs and outputs are the same as *ComputePredictability.m*.
+This script computes prediction during a control period that attempts to match the firing rate of unit B for each B->A unit pair, and not the total number of action potentials as is done in *ComputePredictability.m*.
 
 All of the outputs of the predicition code used in Verzhbinsky et al. 2023, PNAS can be found at:
 zenodo
