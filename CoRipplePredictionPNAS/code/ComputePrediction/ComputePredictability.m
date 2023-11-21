@@ -3,16 +3,16 @@ clear
 close all
 clc
 
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/UtahArray'))
-addpath(genpath('/space/seh8/1/halgdev/projects/cdickey/packages'))
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/util'))
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/ripple-detection/code/utils'))
+addpath(genpath('../../code'))
+
 
 %%
 subject = 'E1';
 outputDir = sprintf('./out/%s', subject);
 % Load ouput from PreprocessPrediction.m
 load(fullfile(outputDir,sprintf('Prediction_%s_%s-preprocessed.mat', subject, state)), 'nullStats', 'rippStats')
+
+load() %load rippleband phase data
 
 
 close all

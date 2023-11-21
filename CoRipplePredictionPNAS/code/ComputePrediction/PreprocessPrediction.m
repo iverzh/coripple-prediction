@@ -1,11 +1,8 @@
 clear
 close all
 clc
+addpath(genpath('../../code'))
 
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/UtahArray'))
-addpath(genpath('/space/seh8/1/halgdev/projects/cdickey/packages'))
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/util'))
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/ripple-detection/code/utils'))
 % parpool(12)
 %%
 subject = 'E1';
@@ -16,11 +13,10 @@ if ~isfolder(outputDir); mkdir(outputDir); end
 
 units = load(); %see readMe for instructions on how to format unit matrix
 
+load() %load rippleband phase data
 
 matExportFolder = ''; %folder for output of ripple detection.
 load(fullfile(matExportFolder,filename));
-
-load('') %load stage mask
 
 rippMask = zeros(length(rippleStats.chanLabels), rippleStats.recordingLength);
 for chRipp = 1:size(rippMask,1) 

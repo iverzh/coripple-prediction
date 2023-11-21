@@ -6,8 +6,8 @@ clear
 close all
 clc
 
-addpath(genpath('/space/seh10/6/halgdev/projects/iverzh/ripples/code/UtahArray'))
-addpath(genpath('/space/seh8/1/halgdev/projects/cdickey/packages'))
+addpath(genpath('../../code'))
+
 
 % parpool(12)
 %%
@@ -95,13 +95,13 @@ for ai = 1:length(aList)
                 APa(APa > rippleStats.recordingLength) = [];
                 APb(APb > rippleStats.recordingLength) = [];
     
-                APbr = APb(StageMask_1kHz(round(APb)));
-                keepNull = ~rMaskb(round(APb)) & StageMask_1kHz(round(APb));
+                APbr = APb(StageMask(round(APb)));
+                keepNull = ~rMaskb(round(APb)) & StageMask(round(APb));
                 APbn = APb(keepNull);
     
                 APar = APa(logical(rMaskab(round(APa)))); %find spikes in overlapping ripples. 
     
-                APan_ii = find(~rMaska(round(APa)) & StageMask_1kHz(round(APa))); %find spikes in chA . 
+                APan_ii = find(~rMaska(round(APa)) & StageMask(round(APa))); %find spikes in chA . 
      
                 if length(APan_ii)/length(APar) > 30 
                     iiKeep = randsample(length(APan_ii)-1,30*length(APar));
@@ -124,7 +124,7 @@ for ai = 1:length(aList)
     
                 for ii = 1:length(APar)
                   
-                   checkStage = StageMask_1kHz(round(APar(ii)));
+                   checkStage = StageMask(round(APar(ii)));
                
     
                    if checkStage 
@@ -150,7 +150,7 @@ for ai = 1:length(aList)
                 end
     
                 for ii = 1:length(APan)
-                   checkStage = StageMask_1kHz(round(APan(ii)));
+                   checkStage = StageMask(round(APan(ii)));
     
     
                    if checkStage
@@ -198,7 +198,7 @@ for ai = 1:length(aList)
                 APa(APa > rippleStats.recordingLength) = [];
                 APb(APb > rippleStats.recordingLength) = [];
     
-                keepNull = ~rMaskb(round(APb)) & StageMask_1kHz(round(APb));
+                keepNull = ~rMaskb(round(APb)) & StageMask(round(APb));
                 APbn = APb(keepNull);
     
                 APar = APa(logical(rMaskaNob(round(APa)))); %find spikes with ripple in a and no ripple in b. 
@@ -208,7 +208,7 @@ for ai = 1:length(aList)
 
                 for ii = 1:length(APar)
                   
-                   checkStage = StageMask_1kHz(round(APar(ii)));
+                   checkStage = StageMask(round(APar(ii)));
                
     
                    if checkStage 
