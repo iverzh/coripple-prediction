@@ -16,7 +16,7 @@ exportDirec = '../../figures';
 if ~isfolder(exportDirec); mkdir(exportDirec); end
 %% Predictability vs Distance (Fig. 4c)
 % close all
-for subj = [1 2 3 4] 
+for subj = 1 %[1 2 3 4] 
     subject = subjects{subj};
     
     try

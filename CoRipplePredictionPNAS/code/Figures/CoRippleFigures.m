@@ -8,7 +8,7 @@ addpath(genpath('../../code'))
 
 %%
 subjects = {'B1', 'B1-dual', 'E1', 'E2'};
-state = 'wake';
+state = 'NREM';
 clr = [237/255 110/255 87/255; %B1
        255/255 66/255 161/255; %B1-dual
        108/255 227/255 208/255; %E1
@@ -20,7 +20,7 @@ if ~isfolder(exportDirec); mkdir(exportDirec); end
 computeCoRip = false;
 %% Predictability vs Distance
 close all
-for subj = 1 
+for subj = 3
     subject = subjects{subj};
     
     try

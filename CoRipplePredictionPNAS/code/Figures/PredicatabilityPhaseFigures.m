@@ -36,7 +36,7 @@ trough_all_subj = [];
 plv_A_AllSubjects = [];
 plv_B_AllSubjects = [];
 pp_AllSubjects = [];
-for subj = [1 2 3 4]% [1 2 3 4] %[1 2 3 4] %:length(subjects)
+for subj = 1% [1 2 3 4]% [1 2 3 4] %[1 2 3 4] %:length(subjects)
     subject = subjects{subj};
    
     try
@@ -51,7 +51,7 @@ for subj = [1 2 3 4]% [1 2 3 4] %[1 2 3 4] %:length(subjects)
                 arrayConfig = 'lateral-medial';
                 subject = 'B1';
             else
-                arrayConfig = 'Medial';
+                arrayConfig = 'medial';
             end
             folder = sprintf('../../out/%s/%s', subject, arrayConfig);
             filename = sprintf('Prediction_%s_%s-processed-0_Prewin-150_win.mat', subject, state);
