@@ -67,10 +67,10 @@ All inputs and outputs are the same as *ComputePredictability.m*.
 This script computes prediction during a control period that attempts to match the firing rate of unit B for each B->A unit pair, and not the total number of action potentials as is done in *ComputePredictability.m*.
 
 All of the outputs of the predicition code used in Verzhbinsky et al. 2023, PNAS can be found at:
-zenodo
+https://zenodo.org/records/10183659
 
 ## Figures and analysis ##
-These scripts use the outputs deposited in the *out/* directory in the repository zenodo.
+These scripts use the outputs deposited in the *out/* directory in the repository https://zenodo.org/records/10183659.
 
 ### CoRippleFigures.m
 Produces the co-ripple plots in Fig 2.
