@@ -22,9 +22,9 @@ Most of the scripts require three inputs:
 ## Computing pairwise unit prediction ##
 ### ComputeCoRippleCCGs.m
 inputs:
-- unit cell array
+- ``units`` cell array
 - rippleStats.mat ripple detection output
- - stage mask
+ - ``StageMask``
 
 output:
  - unit cross-correlograms during three conditions
@@ -34,7 +34,7 @@ output:
 
 ### PreprocessPrediction.m
 inputs:
-- unit cell array
+- ``units`` cell array
 - rippleStats.mat ripple detection output
 - the output folder containing all resutls from *ComputeCoRippleCCGs.m*
 - RBphaseAll ripple band phase matrix. 
@@ -47,7 +47,7 @@ output:
 ### ComputePredictability.m
 inputs:
 - preprocessed ``rippStats`` and ``nullStats`` from *PreprocessPrediction.m*
-- units cell array
+- ``units`` cell array
 - RBphaseAll maxtrix. 
 
 output:
@@ -84,5 +84,18 @@ Produces all prediction panels in Fig 4.
 ### PredictabilityPhaseFigures.m
 Produces all prediction phase panels in Fig 5.
 
+### predictStatistics
+inputs:
+    - ``units`` cell array
+    - processed ``rippStats`` and ``nullStats`` from *ComputePredictability.m*
 
+This computes many of the predicion statistics reported in Verzhbinsky et al PNAS 2023
+
+### rippleStatistics
+inputs:
+    - ``units`` cell array
+    - processed ``rippStats`` and ``nullStats`` from *ComputePredictability.m*
+    - ``StageMask`` 
+
+This computes many of the ripple-unit (e.g., changes in unit firing rate, ripple-unit phase locking, ... etc.) and ripple characteristics (e.g., ripple densities, phase locking, ... etc) reported in Verzhbinsky et al PNAS 2023
 
