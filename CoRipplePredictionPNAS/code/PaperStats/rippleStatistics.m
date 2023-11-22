@@ -1,17 +1,7 @@
 
-
-
-
-
-
-
-
-
-
-
-subjects = {'T11', 'MG29', 'MG63'};
+subjects = {'B1', 'E1', 'E2'};
 state = 'wake';
-matExportFolder = '/space/seh10/6/halgdev/projects/iverzh/ripples/matFiles';
+matExportFolder = '';
 %
 density = [];
 amp = [];
@@ -23,15 +13,14 @@ PYfrRip = [];
 INfrRip = [];
 PYfrNull = [];
 INfrNull = [];
-for s = 1 %2:length(subjects)
+for s = 1:length(subjects)
     subject = subjects{s};
-    stageFolder = sprintf('/space/seh10/6/halgdev/projects/iverzh/data/UtahArrayData/%s/data_1kHz', subject);
-    load(fullfile(stageFolder, sprintf('%s_stageMask_%s.mat', subject, state)))
+    stageFolder ='';
+    load(fullfile(stageFolder,'')) %load stage  mask
 
     if s == 1
-        units = LoadSpikeTimes(subject,'CellExplorer','medial');
-        load(fullfile(matExportFolder,[subject,'_ripple_stats_wake_NC_wakeonly_medial.mat']));
-%         load(fullfile(matExportFolder,[subject,'_ripple_stats_sleep_NC_NREMonly_medial.mat']));
+        units = load('');
+        load(fullfile(matExportFolder,'')); %load ripple detection
         channels = unique(cell2mat(units(:,1)));
         for ii = 1:length(channels)
             ch = channels(ii);
@@ -75,8 +64,8 @@ for s = 1 %2:length(subjects)
             INfrNull =[INfrNull FR];
         end
         if strcmp(state, 'NREM')
-            units = LoadSpikeTimes(subject,'CellExplorer','lateral');
-            load(fullfile(matExportFolder,[subject,'_ripple_stats_sleep_NC_NREMonly_lateral.mat']));
+            units = load('');
+            load(fullfile(matExportFolder,''));
             channels = unique(cell2mat(units(:,1)));
             for ii = 1:length(channels)
                 ch = channels(ii);
@@ -122,9 +111,8 @@ for s = 1 %2:length(subjects)
             end
         end
     else
-        units = LoadSpikeTimes(subject,'CellExplorer');
-        load(fullfile(matExportFolder,[subject,'_ripple_stats_wake_NC_wakeOnly.mat']));
-%         load(fullfile(matExportFolder,[subject,'_ripple_stats_sleep_NC_NREMOnly.mat']));
+        units = load('');
+        load(fullfile(matExportFolder,''));
         channels = unique(cell2mat(units(:,1)));
         for ii = 1:length(channels)
             ch = channels(ii);
@@ -184,7 +172,7 @@ ampM = amp;
 durationM = duration;
 freqM = freq;
 %% Compare ripple charateristics from M1 and temporal lobe
-exportDirec = '/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/CoRippleFigures';
+exportDirec = '../../figures';
 
 figure('Position', [435 368 241 413]);
 M = [densityM,densityT];
@@ -247,18 +235,15 @@ fig.Color = 'w';
 savepdf(gcf, fullfile(exportDirec, sprintf('frequency_%s.pdf', state)))
 
 
-%% unit Phase locking 
+%% unit Phase locking to ripple
 close all
-subject = 'T11';
+subject = 'B1';
 state = 'NREM';
-stageFolder = sprintf('/space/seh10/6/halgdev/projects/iverzh/data/UtahArrayData/%s/data_1kHz', subject);
+stageFolder = sprintf('');
 
-units = LoadSpikeTimes(subject,'CellExplorer','lateral');
-load(fullfile(stageFolder, sprintf('%s_stageMask_%s.mat', subject, state)))
-% load(fullfile(matExportFolder,[subject,'_ripple_stats_sleep_NC_NREMOnly.mat']));
-% load(fullfile(matExportFolder,[subject,'_ripple_stats_wake_NC_wakeOnly.mat']));
-% load(fullfile(matExportFolder,[subject,'_ripple_stats_wake_NC_wakeonly_medial.mat']));
-% load(fullfile(matExportFolder,[subject,'_ripple_stats_sleep_NC_NREMonly_medial.mat']));
+units = load('');
+load(fullfile(stageFolder,'')) %Stage Mask
+
 load(fullfile(matExportFolder,[subject,'_ripple_stats_sleep_NC_NREMonly_lateral.mat']));
 
 rippMask = zeros(length(rippleStats.chanLabels), rippleStats.recordingLength);
@@ -289,15 +274,15 @@ for ui = 1:length(units)
         FRrip = [FRrip (sum(rippMask(ch,uT)) / sum(rippMask(ch,:))) * 1e3];
         FRbase = [FRbase (sum(StageMask_1kHz(uT)) / sum(StageMask_1kHz)) * 1e3];
 
-%         uT = uT(rippMask(ch,uT));
-%         unitPhase = RBphaseAll(ch, uT);
-%         phase{ui} = unitPhase;
-% 
-%         s = sum(unitPhase<pi/2 & unitPhase>-pi/2);
-%         n = s + sum(unitPhase>pi/2 | unitPhase<-pi/2);
-%         p = myBinomTest(s,n,0.5);
-% 
-%         pBinom(ui) = p;
+        uT = uT(rippMask(ch,uT));
+        unitPhase = RBphaseAll(ch, uT);
+        phase{ui} = unitPhase;
+
+        s = sum(unitPhase<pi/2 & unitPhase>-pi/2);
+        n = s + sum(unitPhase>pi/2 | unitPhase<-pi/2);
+        p = myBinomTest(s,n,0.5);
+
+        pBinom(ui) = p;
         
     end
 
@@ -314,149 +299,6 @@ sum(pBinom(ti) < .05) / sum(ti)
 
 ti = strcmp(type, 'int');
 sum(pBinom(ti) < .05) / sum(ti)
-
-% save(sprintf('%s_SpikeRipplePhases_%s.mat', subject, state), 'phase', 'type', "pBinom", '-v7.3')
-%%
-NREM = load('/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/PredictPhaseFigures/PLV/FRincreaseNREM.mat');
-Wake = load('/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/PredictPhaseFigures/PLV/FRincreaseWaking.mat');
-close all
-figure;
-pl = plot(log(NREM.FRbase),NREM.yy , '.'); hold on;
-% Step 2: Perform Linear Regression
-X = log(NREM.FRbase(~isnan(NREM.yy)));
-Y2 = NREM.yy(~isnan(NREM.yy));
-coefficients = polyfit(X, Y2, 1); % Fit a straight line (degree 1)
-
-% Step 3: Plot Data and Regression Line
-x_fit = linspace(min(X),max(X),1000); % Generate x values for the regression line
-y_fit = polyval(coefficients, x_fit); % Compute y values for the regression line
-ln = plot(x_fit, y_fit, 'r', 'LineWidth', 3); hold on;% Plot the regression line in red
-ln.Color = 0.8*pl.Color;
-
-pl = plot(log(Wake.FRbase),Wake.yy , '.'); hold on;
-X = log(Wake.FRbase(~isnan(Wake.yy)));
-Y2 = Wake.yy(~isnan(Wake.yy));
-coefficients = polyfit(X, Y2, 1); % Fit a straight line (degree 1)
-
-% Step 3: Plot Data and Regression Line
-x_fit = linspace(min(X),max(X),1000); % Generate x values for the regression line
-y_fit = polyval(coefficients, x_fit); % Compute y values for the regression line
-ln = plot(x_fit, y_fit, 'r', 'LineWidth', 3); hold on;% Plot the regression line in red
-ln.Color = 0.8*pl.Color;
-
-fig = gcf;
-fig.Color = 'w';
-fig.Position = [866 764 345 413];
-
-ylabel('change in FR during ripples')
-xlabel('log(FR)')
-box off
-[RHO,PVAL] = corr(NREM.FRbase(~isnan(NREM.yy))',NREM.yy(~isnan(NREM.yy))','Type','Pearson')
-[RHO,PVAL] = corr(Wake.FRbase(~isnan(Wake.yy))',Wake.yy(~isnan(Wake.yy))','Type','Pearson')
-
-savepdf(gcf,'/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/rippFRvsBaseline.pdf')
-
-NREM = load('/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/PredictPhaseFigures/PLV/phasedataNREM.mat');
-Wake = load('/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/PredictPhaseFigures/PLV/phasedataWaking.mat');
-ii = NREM.pp_AllSubjects < 3;
-X1 = log(NREM.FR_AllSubjects(ii));
-Y1 = NREM.plv_B_AllSubjects(ii);
-figure;
-pl = plot(X1,Y1 , '.'); hold on;
-% Step 2: Perform Linear Regression
-
-coefficients = polyfit(X1, Y1, 1); % Fit a straight line (degree 1)
-
-% Step 3: Plot Data and Regression Line
-x_fit = linspace(min(X1),max(X1),1000); % Generate x values for the regression line
-y_fit = polyval(coefficients, x_fit); % Compute y values for the regression line
-ln = plot(x_fit, y_fit, 'r', 'LineWidth', 3); hold on;% Plot the regression line in red
-ln.Color = 0.8*pl.Color;
-
-ii = Wake.pp_AllSubjects < 3;
-X2 = log(Wake.FR_AllSubjects(ii));
-Y2 = Wake.plv_B_AllSubjects(ii); 
-pl = plot(X2, Y2 , '.'); hold on;
-
-coefficients = polyfit(X2, Y2, 1); % Fit a straight line (degree 1)
-
-% Step 3: Plot Data and Regression Line
-x_fit = linspace(min(X2),max(X2),1000); % Generate x values for the regression line
-y_fit = polyval(coefficients, x_fit); % Compute y values for the regression line
-ln = plot(x_fit, y_fit, 'r', 'LineWidth', 3); hold on;% Plot the regression line in red
-ln.Color = 0.8*pl.Color;
-
-fig = gcf;
-fig.Color = 'w';
-fig.Position = [866 764 345 413];
-ylabel('PLVb')
-xlabel('log(FR)')
-box off
-[RHO,PVAL] = corr(X1', Y1','Type','Pearson')
-[RHO,PVAL] = corr(X2',Y2','Type','Pearson')
-savepdf(gcf,'/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/PLVBvsBaseline.pdf')
-ii = NREM.pp_AllSubjects < 3;
-X1 = log(NREM.FR_AllSubjects(ii));
-Y1 = NREM.pp_AllSubjects(ii);
-figure;
-pl = plot(X1,Y1 , '.'); hold on;
-% Step 2: Perform Linear Regression
-
-coefficients = polyfit(X1, Y1, 1); % Fit a straight line (degree 1)
-
-% Step 3: Plot Data and Regression Line
-x_fit = linspace(min(X1),max(X1),1000); % Generate x values for the regression line
-y_fit = polyval(coefficients, x_fit); % Compute y values for the regression line
-ln = plot(x_fit, y_fit, 'r', 'LineWidth', 3); hold on;% Plot the regression line in red
-ln.Color = 0.8*pl.Color;
-
-ii = Wake.pp_AllSubjects < 3;
-X2 = log(Wake.FR_AllSubjects(ii));
-Y2 = Wake.pp_AllSubjects(ii); 
-pl = plot(X2, Y2 , '.'); hold on;
-
-coefficients = polyfit(X2, Y2, 1); % Fit a straight line (degree 1)
-
-% Step 3: Plot Data and Regression Line
-x_fit = linspace(min(X2),max(X2),1000); % Generate x values for the regression line
-y_fit = polyval(coefficients, x_fit); % Compute y values for the regression line
-ln = plot(x_fit, y_fit, 'r', 'LineWidth', 3); hold on;% Plot the regression line in red
-ln.Color = 0.8*pl.Color;
-
-fig = gcf;
-fig.Color = 'w';
-fig.Position = [866 764 345 413];
-ylabel('PLVb')
-xlabel('log(FR)')
-box off
-[RHO,PVAL] = corr(X1', Y1','Type','Pearson')
-[RHO,PVAL] = corr(X2',Y2','Type','Pearson')
-savepdf(gcf,'/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/figures/PredictvsBaseline.pdf')
-
-%%
-pBinomAll = [];
-typeAll = [];
-subjects = {'T11', 'MG29', 'MG63'};
-state = 'wake'; 
-
-for s = 1:2
-    subject = subjects{s};
-    folder = sprintf('/space/seh10/6/halgdev/projects/iverzh/ripples/UtahArray/SpikePredict/PredictAll/%s', subject);
-    file = sprintf('%s_SpikeRipplePhases_%s.mat', subject, state);
-    load(fullfile(folder,file))
-    pBinomAll = [pBinomAll pBinom];
-    typeAll = [typeAll type]; 
-
-end
-
-[h, crit_p, adj_ci_cvrg, adj_p]=fdr_bh(pBinomAll,.05,'pdep','yes');
-
-ti = strcmp(typeAll, 'pyr');
-sum(adj_p(ti) < .05) / sum(ti)
-
-ti = strcmp(typeAll, 'int');
-sum(adj_p(ti) < .05) / sum(ti)
-
 
 
 
