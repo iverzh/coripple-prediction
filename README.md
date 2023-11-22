@@ -46,7 +46,7 @@ output:
 
 ### ComputePredictability.m
 inputs:
-- preprocessed **rippStats** and **nullStats** from *PreprocessPrediction.m*
+- preprocessed ''rippStats'' and ''nullStats'' from *PreprocessPrediction.m*
 - units cell array
 - RBphaseAll maxtrix. 
 
